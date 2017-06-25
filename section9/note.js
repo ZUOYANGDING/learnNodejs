@@ -5,47 +5,83 @@
 // 	return a+b;
 // }
 const fs = require('fs');
+
+var fatchNote = function() {
+	try{
+		var notesString = fs.readFileSync('notes.json');
+		var notes = JSON.parse(notesString);
+		return notes;
+	} catch (err) {
+		return []
+	}
+}
+
+var saveNote = function(notes) {
+	fs.writeFileSync('notes.json', JSON.stringify(notes));
+}
+
 var add = (title, body) => {
 	var notes = [];
 	var note = {
 		title,
 		body
 	};
-	try {
-		var notesString = fs.readFileSync('notes.json');
-		notes = JSON.parse(notesString);
-		//console.log(notesObj);
-	} catch (err) {
-
-	}
-
+	
+	notes = fatchNote();
 	var duplicateNote = notes.filter(function(note) {
 		return note.title === title;
 	});
+	
 	if (duplicateNote.length === 0) {
-		console.log(duplicateNote.length);
+		//console.log(duplicateNote.length);
 		notes.push(note);
-		fs.writeFileSync('notes.json', JSON.stringify(notes));
-	} else {
-		console.log('Title:' + title + ' has already exist in file');
+		saveNote(notes);
+		return note;
 	}
 }
 
 var list = () => {
-	console.log('list all nodes');
+	var notes = fatchNote();
+	if (notes.length !== 0) {
+		return notes;
+	}
 }
 
-var read = () => {
-	console.log('read the nodes');
+var read = (title) => {
+	var notes = fatchNote();
+	var noteFind = notes.filter(function(note) {
+		return note.title === title;
+	});
+	if (noteFind.length !== 0) {
+		return noteFind[0];
+	}
 }
 
-var remove = () => {
-	console.log('remove the nodes');
+var remove = (title) => {
+	var notes = fatchNote();
+	var filteredNotes = notes.filter(function(note) {
+		//console.log(note.title);
+		//console.log(title);
+		return note.title !== title; 
+	});
+	if (filteredNotes.length !== notes.length) {
+		saveNote(filteredNotes);
+		return true;
+	} else {
+		return false;
+	}
+}
+
+var log = (note) => {
+	console.log('---------------');
+	console.log(`title: ${note.title}`);
+	console.log(`body: ${note.body}`);
 }
 
 module.exports = {
 	addNode: add,
 	listNode: list,
 	readNode: read,
-	removeNode: remove
+	removeNode: remove,
+	logNode: log
 }
