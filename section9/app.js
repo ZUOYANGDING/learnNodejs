@@ -42,12 +42,36 @@ const yargs = require('yargs');
 // 	console.log('cannot recognize the command');
 // }
 
-var yArg = yargs.argv;
+const titleOptions = {
+		describe: 'Title of the note',
+		demand: true,
+		alias: 't'
+	};
+const bodyOptions = {
+		describe: 'Body of the note',
+		demand: true,
+		alias: 'b'
+	};
+
+var yArg = yargs.command('add', 'Add a note', {
+	title: titleOptions,
+	body: bodyOptions
+	})
+	.command('list', 'List all notes')
+	.command('read', 'Read a note', {
+		title: titleOptions
+	})
+	.command('remove', 'Remove a note', {
+		title: titleOptions
+	})
+	.help()
+	.argv;
+
 var command = yArg._[0];
 
 if (command === 'add') {
 	var n = note.addNode(yArg.title, yArg.body);
-	if (n) {
+	if (n) { 
 		console.log('add sucessfully');
 		note.logNode(n);
 	} else {

@@ -31,10 +31,10 @@ var add = (title, body) => {
 	var duplicateNote = notes.filter(function(note) {
 		return note.title === title;
 	});
-	
+	//var duplicateNote = notes.filter((note) => note.title === title);
 	if (duplicateNote.length === 0) {
 		//console.log(duplicateNote.length);
-		notes.push(note);
+		notes.push(note); 
 		saveNote(notes);
 		return note;
 	}
