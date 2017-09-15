@@ -9,6 +9,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "weather-js": "^2.0.0",
+    "yargs": "^8.0.2"
   }
 }
